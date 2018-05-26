@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <title>Ta暗恋我，我也暗恋Ta。 </title>
+    <style>
+        body {
+            color: #4d4d4d;
+            font: 'Helvetica Neue', Helvetica, 'Microsoft Yahei', Arial, sans-serif;
+            background: #c5c5c5 url('img/timg.jfif');
+            -moz-background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-smoothing: antialiased;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-warning text-left" aria-hidden="true">
+            <font color="magenta">
+                <h2 class="glyphicon glyphicon-heart text-left" aria-hidden="true"></h2>
+            </font> 暗恋Ta请告诉我, 说不定Ta也暗恋你哦 </h2>
+    </div>
+    <div id=anLianBody class="container">
+        <p v-if="!wallet" class="text-center alert alert-warning">注意：请使用Chrome浏览器安装
+            <a href="https://github.com/ChengOrangeJu/WebExtensionWallet" target="_blank">Chrome Nebulas-WebExtensionWallet</a> 钱包插件后再使用。
+        </p>
+        <h3 class="alert alert-warning text-center" v-if="isLogin">
+            {{userName}}, 请常回来看看，以免错过Ta
+        </h3>
+        <div class="form-group" v-else>
+            <div class="col-sm-6">
+                <span id="nameHelpBlock" class="help-block">请输入你的真实姓名.</span>
+                <input type="text" id=inputName class=form-control placeholder="姓名" aria-describedby="nameHelpBlock">
+            </div>
+            <div class="col-sm-6">
+                <span id="phoneHelpBlock" class="help-block">请输入你的手机号码.</span>
+                <input type="text" id=inputPhone class=form-control placeholder="手机号码" aria-describedby="phoneHelpBlock">
+            </div>
+            <span id="joinHelpBlock" class="help-block">请输入真实信息，以免错过Ta, 信息加密别人看不到哦。
+            </span>
+            <button type="submit" class="btn btn-info btn-block" onclick="onJoininClick()">注册</button>
+        </div>
+        <div class="row" style="opacity: 0.8">
+            <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            我暗恋的人
+                        </h3>
+                    </div>
+                    <div class="panel-body" v-for="user of sendUsers">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{user.toName}}
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    <h4>{{user.toPhone}}</h4>
+                                </p>
+                                <p>
+                                    <h4 style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;">{{user.message}}</h4>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            暗恋我的人
+                        </h3>
+                    </div>
+                    <div class="panel-body" v-for="user of receivedUsers">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    {{user.toName}}
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    <h4>{{user.toPhone}}</h4>
+                                </p>
+                                <p>
+                                    <h4 style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;">{{user.message}}</h4>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="col-sm-6">
+                <span id="toNameHelpBlock" class="help-block">请输入Ta的真实姓名.</span>
+                <input type="text" id=sendToName class=form-control placeholder="姓名" aria-describedby="toNameHelpBlock">
+            </div>
+            <div class="col-sm-6">
+                <span id="toPhoneHelpBlock" class="help-block">请输入Ta的手机号码.</span>
+                <input type="text" id=sendToPhone class=form-control placeholder="手机号码" aria-describedby="toPhoneHelpBlock">
+            </div>
+            <span id="messageHelpBlock" class="help-block">给Ta留言.</span>
+            <textarea type="text" id=sendMessage class=form-control placeholder="留言" aria-describedby="messageHelpBlock" rows=2/></textarea>
+            <span id="joinHelpBlock" class="help-block">请输入真实信息，系统根据这些信息进行筛选哦。</span>
+            <button type="submit" class="btn btn-info btn-block" onclick="sendMsgClick()" style="margin-left: 2pt">把Ta存入区块链</button>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            </br>
+            <p class="text-center text-info">indieStudio@icloud.com</p>
+        </div>
+        <p class="text-center">Copyright © 2018 DianBao.live</p>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src=lib/jquery-3.3.1.min.js></script>
+<script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
+<script src=lib/nebPay.js></script>
+<script>
+    "use strict";
+    var dappAddress = "n1gcqTEVGTed1CBryH5g6UkWgApJ5KoFL4b";
+    var NebPay = require("nebpay");
+    var nebPay = new NebPay();
+    var arr = [];
+    var serialNumber;
+    var intervalQuery;
+    var queryTimes = 0;
+    var callbackUrl = NebPay.config.mainnetUrl;
+    var vm = new Vue({
+        el: "#anLianBody",
+        data: {
+            wallet: typeof(webExtensionWallet) !== "undefined",
+            isLogin: false,
+            sendUsers: [],
+            receivedUsers: [],
+            user: {},
+            userName: ""
+        },
+    });
+
+    function getUser() {
+        var to = dappAddress;
+        var callFunction = "getUser"
+        var callArgs = ""
+        var options = {
+            goods: {
+                name: "example"
+            },
+            callback: callbackUrl
+        }
+
+        nebPay.simulateCall(to, 0, callFunction, callArgs, {
+            listener: resp => {
+                console.log("getUser::" + JSON.stringify(resp));
+                var user = JSON.parse(resp.result);
+                if (user) {
+                    user.fromName = uncompileStr(user.fromName);
+                    user.fromPhone = uncompileStr(user.fromPhone);
+                    vm.$data.user = user
+                    vm.$data.isLogin = true;
+                    vm.$data.userName = user.fromName
+                    getMessages();
+
+                } else {
+                    vm.$data.isLogin = false;
+                }
+                vm.$data.isBusy = false;
+            }
+        });
+    }
+
+    function getMessages() {
+        var to = dappAddress;
+        var value = 0;
+        var callFunction = "getMyMessages"
+        var callArgs = ""
+        var options = {
+            goods: {
+                name: "example"
+            },
+            callback: callbackUrl
+        }
+        nebPay.simulateCall(to, value, callFunction, callArgs, {
+            listener: resp => {
+                console.log("getMyMessages::" + JSON.stringify(resp));
+                var res = resp.result;
+                var data = jQuery.parseJSON(resp.result)
+                if (data) {
+                    vm.$data.sendUsers = [{}];
+                    vm.$data.receivedUsers = [{}];
+                    for (var i in data) {
+
+                        data[i].toName = uncompileStr(data[i].toName);
+                        data[i].message = uncompileStr(data[i].message);
+                        data[i].toPhone = uncompileStr(data[i].toPhone);
+                        data[i].fromName = uncompileStr(data[i].fromName);
+                        data[i].fromPhone = uncompileStr(data[i].fromPhone);
+
+                        if (data[i].fromName == vm.user.fromName && data[i].fromPhone == vm.user.fromPhone) {
+                            vm.$data.sendUsers.push(data[i]);
+                        } else {
+                            vm.$data.receivedUsers.push(data[i]);
+                        }
+
+
+
+                        console.log("getMyMessages::vm.sendUsers:::" + JSON.stringify(vm.sendUsers));
+                        console.log("getMyMessages::vm.receivedUsers:::" + JSON.stringify(vm.receivedUsers));
+                    }
+                    if (vm.sendUsers.length > 1)
+                        vm.$data.sendUsers.splice(0, 1);
+                    if (vm.receivedUsers.length > 1)
+                        vm.$data.receivedUsers.splice(0, 1);
+                    clearInterval(intervalQuery);
+                }
+            }
+        });
+    }
+
+    function compileStr(code) {
+        var c = String.fromCharCode(code.charCodeAt(0) + code.length);
+        for (var i = 1; i <
+            code.length; i++) {
+            c += String.fromCharCode(code.charCodeAt(i) +
+                code.charCodeAt(i - 1));
+        }
+        return escape(c);
+    }
+
+
+    function uncompileStr(code) {
+        code = unescape(code);
+        var c = String.fromCharCode(code.charCodeAt(0) -
+            code.length);
+        for (var i = 1; i < code.length; i++) {
+            c += String.fromCharCode(code.charCodeAt(i) -
+                c.charCodeAt(i -
+                    1));
+        }
+        return c;
+    }
+
+
+
+    function onJoininClick() {
+        var name = jQuery.trim($(" #inputName").val());
+        var phone = jQuery.trim($(" #inputPhone").val());
+        if (name.length < 2 || phone.length < 11) {
+            window.alert(" 请输入您的真实姓名和手机号码再继续");
+            return;
+        }
+        name = compileStr(name);
+        phone = compileStr(phone);
+        var to = dappAddress;
+        var value = 0;
+        var callFunction = "signIn"
+        var callArgs = "[\"" + name + "\",\"" + phone + "\" ]"
+        var options = {
+            goods: {
+                name: "example"
+            },
+            callback: callbackUrl
+        }
+        serialNumber = nebPay.call(to, value, callFunction,
+            callArgs, {
+                listener: resp => {
+                    try {
+                        var result = resp.toLowerCase();
+                        if (result.indexOf("error") > -1) {
+                            window.alert("出现错误：" + result);
+                        }
+                    } catch {
+                        if (resp.txhash) {
+
+                            window.alert("欢迎您：" + name +
+                                "， 数据写入区块链中......稍后会自动获取您的信息， 请稍等。 ");
+                            queryTimes = 0;
+                            vm.$data.userName = name
+                            intervalQuery = setInterval(function() {
+                                joininIntervalQuery();
+                                vm.$data.isBusy = true;
+                            }, 5000);
+                        }
+
+                    }
+                }
+            });
+    }
+
+    function joininIntervalQuery() {
+        nebPay.queryPayInfo(serialNumber)
+            .then(function(resp) {
+                var respObject = JSON.parse(resp)
+                if (respObject.code === 0) {
+                    setTimeout("vm.$data.isBusy = false; getUser()", 5000);
+                    clearInterval(intervalQuery)
+                    queryTimes = 0;
+                    vm.$data.isLogin = true;
+                } else if (queryTimes++ >= 4) {
+                    clearInterval(intervalQuery);
+                    queryTimes = 0;
+                    vm.$data.isBusy = false;
+                    window.alert("很抱歉：" + vm.u + " " +
+                        "出现了一些错误，请您稍后刷新试试。");
+                }
+            })
+            .catch(function(err) {
+                vm.$data.isBusy = false;
+                window.alert("很抱歉：" + " " +
+                    "注册时出现了网络错误，请您稍后重新注册。");
+            });
+    }
+
+    function sendMsgClick() {
+        if (typeof(webExtensionWallet) === "undefined") {
+            window.alert("请先安装NAS钱包插件");
+            return;
+        }
+        if (!vm.isLogin) {
+            return;
+        }
+        var amount = 0; // jQuery.trim($("#sendAmount").val());
+
+        var sendToName = jQuery.trim($("#sendToName").val());
+        if (sendToName.length < 2) {
+            window.alert(" 你暗恋的人叫什么？");
+            return;
+        }
+        sendToName = compileStr(sendToName);
+
+        var sendToPhone = jQuery.trim($("#sendToPhone").val());
+        if (sendToPhone.length < 11) {
+            window.alert("不知道Ta的真实手机号码？");
+            return;
+        }
+        sendToPhone = compileStr(sendToPhone);
+
+        var message = jQuery.trim($(" #sendMessage").val());
+        if (sendMessage.length < 1) {
+            window.alert("对Ta仰慕已久，没有什么话想对Ta说吗?");
+            return;
+        }
+        message = compileStr(message);
+
+        var to = dappAddress;
+        var callFunction = "sendMessage"
+        var callArgs = "[\"" + sendToName + "\" ,\"" + sendToPhone + "\" ,\"" + message + "\" ]"
+        var options = {
+            goods: {
+                name: "example"
+            },
+            callback: callbackUrl //NebPay.config.mainnetUrl
+        }
+        serialNumber = nebPay.call(to, 0, callFunction, callArgs, {
+            listener: resp => {
+                try {
+                    vm.$data.isBusy = false;
+                    var result = resp.toLowerCase();
+                    if (result.indexOf("error") > -1) {
+                        window.alert("出现错误：" + result);
+                    }
+                } catch {
+                    if (resp.txhash) {
+                        queryTimes = 0;
+                        vm.$data.isBusy = true;
+                        window.alert("正在把" + jQuery.trim($("#sendToName").val()) + "封存到区块链中，写入成功后信息会自动刷新，请稍等。。。");
+                        intervalQuery = setInterval(function() {
+                            sendMsgIntervalQuery();
+                        }, 5000);
+                    }
+                }
+            }
+        });
+    }
+
+    function sendMsgIntervalQuery() {
+        nebPay.queryPayInfo(serialNumber)
+            .then(function(resp) {
+                var respObject = JSON.parse(resp)
+                if (respObject.code === 0) {
+                    setTimeout("vm.$data.isBusy = false; getMessages();", 3000);
+                    clearInterval(intervalQuery)
+                    queryTimes = 0;
+                } else if (queryTimes++ >= 5) {
+                    vm.$data.isBusy = false;
+                    queryTimes = 0;
+                    document.getElementById("helpBlock").innerHTML = '写入区块链发送失败，稍后再试';
+                }
+            })
+            .catch(function(err) {
+                queryTimes = 0;
+                vm.$data.isBusy = false;
+                document.getElementById("helpBlock").innerHTML = '出现了一些错误，你可以继续使用。';
+            });
+    }
+
+
+    $(document).ready(function() {
+        if (typeof(webExtensionWallet) === "undefined") {} else {
+            getUser();
+        }
+        window.mainInter = setInterval(function() {
+            try {
+                if (typeof(webExtensionWallet) === "undefined") {} else {
+                    if (vm.isLogin && !vm.isBusy) {
+                        getMessages();
+                    }
+                    if (!vm.isLogin && !vm.isBusy) {
+                        getUser();
+                    }
+                }
+            } catch (err) {
+                // clearInterval(window.mainInter);
+            }
+        }, 10000);
+    });
+</script>
+
+</html>
