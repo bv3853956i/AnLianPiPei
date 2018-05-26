@@ -267,12 +267,10 @@
             window.alert(" 请输入您的真实姓名和手机号码再继续");
             return;
         }
-        name = compileStr(name);
-        phone = compileStr(phone);
         var to = dappAddress;
         var value = 0;
         var callFunction = "signIn"
-        var callArgs = "[\"" + name + "\",\"" + phone + "\" ]"
+        var callArgs = "[\"" + compileStr(name) + "\",\"" + compileStr(phone) + "\" ]"
         var options = {
             goods: {
                 name: "example"
